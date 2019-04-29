@@ -1,6 +1,6 @@
 from pyrogram import Client, Filters, Message, InlineKeyboardMarkup, InlineKeyboardButton
 from pyrogram.api import functions, types
-from pyrogram.api.errors import FloodWait
+from pyrogram.errors import FloodWait
 from re import search
 from redis import StrictRedis
 from time import sleep
