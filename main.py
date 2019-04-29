@@ -63,7 +63,8 @@ def _cli_process_msgs(cli: method.Client, msg: method.Message):
                         print('{}'.format(error))
         if method.is_sudo(uid):
             if method.search(r'^sudo list$', txt):
-                text = "\n".join(list(method.redis.smembers('{}:sudo'.format(method.api.get_me().id)))) or 'List Is Empty.'
+                text = "\n".join(list(method.redis.smembers('{}:sudo'.format(
+                    method.api.get_me().id)))) or 'List Is Empty.'
                 method.send_msg(
                     chat_id=msg.chat.id,
                     text=text
@@ -89,7 +90,8 @@ def _cli_process_msgs(cli: method.Client, msg: method.Message):
                     txt = 'ربات به مدت {0} ساعت برای گروه {1} فعال شد.'.format(count, msg.chat.id)
                     for user in method.manager:
                         try:
-                            method.send_msg(int(user), 'ربات به مدت {0} ساعت برای گروه {1} شارژ شد.'.format(count, msg.chat.id))
+                            method.send_msg(int(user), 'ربات به مدت {0} ساعت برای گروه {1} شارژ شد.'.format(
+                                count, msg.chat.id))
                         except:
                             pass
                 elif mode.lower() == 'd':
@@ -106,7 +108,8 @@ def _cli_process_msgs(cli: method.Client, msg: method.Message):
                     except:
                         pass
             elif method.search(r'^(add owner)(\s(\d+|@[a-zA-Z](?!.*[_]{2})[a-zA-Z0-9_]{3,30}[a-zA-Z0-9]))?$', txt):
-                sudo_id = method.search(r'^(add owner)(\s(\d+|@[a-zA-Z](?!.*[_]{2})[a-zA-Z0-9_]{3,30}[a-zA-Z0-9]))?$', txt).group(3)
+                sudo_id = method.search(r'^(add owner)(\s(\d+|@[a-zA-Z](?!.*[_]{2})[a-zA-Z0-9_]{3,30}[a-zA-Z0-9]))?$',
+                                        txt).group(3)
                 if sudo_id:
                     if sudo_id.isnumeric():
                         try:
@@ -135,7 +138,8 @@ def _cli_process_msgs(cli: method.Client, msg: method.Message):
                     except Exception as error:
                         print('{}'.format(error))
             elif method.search(r'^(rem owner)(\s(\d+|@[a-zA-Z](?!.*[_]{2})[a-zA-Z0-9_]{3,30}[a-zA-Z0-9]))?$', txt):
-                sudo_id = method.search(r'^(rem owner)(\s(\d+|@[a-zA-Z](?!.*[_]{2})[a-zA-Z0-9_]{3,30}[a-zA-Z0-9]))?$', txt).group(3)
+                sudo_id = method.search(r'^(rem owner)(\s(\d+|@[a-zA-Z](?!.*[_]{2})[a-zA-Z0-9_]{3,30}[a-zA-Z0-9]))?$',
+                                        txt).group(3)
                 if sudo_id:
                     if sudo_id.isnumeric():
                         try:
@@ -165,7 +169,8 @@ def _cli_process_msgs(cli: method.Client, msg: method.Message):
                         print('{}'.format(error))
         if method.is_owner(cid, uid):
             if method.search(r'^(add admin)(\s(\d+|@[a-zA-Z](?!.*[_]{2})[a-zA-Z0-9_]{3,30}[a-zA-Z0-9]))?$', txt):
-                sudo_id = method.search(r'^(add admin)(\s(\d+|@[a-zA-Z](?!.*[_]{2})[a-zA-Z0-9_]{3,30}[a-zA-Z0-9]))?$', txt).group(3)
+                sudo_id = method.search(r'^(add admin)(\s(\d+|@[a-zA-Z](?!.*[_]{2})[a-zA-Z0-9_]{3,30}[a-zA-Z0-9]))?$',
+                                        txt).group(3)
                 if sudo_id:
                     if sudo_id.isnumeric():
                         try:
@@ -194,7 +199,8 @@ def _cli_process_msgs(cli: method.Client, msg: method.Message):
                     except Exception as error:
                         print('{}'.format(error))
             elif method.search(r'^(rem admin)(\s(\d+|@[a-zA-Z](?!.*[_]{2})[a-zA-Z0-9_]{3,30}[a-zA-Z0-9]))?$', txt):
-                sudo_id = method.search(r'^(rem admin)(\s(\d+|@[a-zA-Z](?!.*[_]{2})[a-zA-Z0-9_]{3,30}[a-zA-Z0-9]))?$', txt).group(3)
+                sudo_id = method.search(r'^(rem admin)(\s(\d+|@[a-zA-Z](?!.*[_]{2})[a-zA-Z0-9_]{3,30}[a-zA-Z0-9]))?$',
+                                        txt).group(3)
                 if sudo_id:
                     if sudo_id.isnumeric():
                         try:
@@ -282,7 +288,8 @@ def _cli_process_msgs(cli: method.Client, msg: method.Message):
                                 user_id=client.resolve_peer(reply_msg.from_user.id)
                             )
                         )
-                        txt = '**All Messages From** {0} **Has Been Deleted**'.format(method.mention(reply_msg.from_user.id))
+                        txt = '**All Messages From** {0} **Has Been Deleted**'.format(
+                            method.mention(reply_msg.from_user.id))
                         mt.send_message(msg.chat.id, txt, parse_mode='markdown')
                     except Exception as error:
                         print('{}'.format(error))
@@ -331,7 +338,8 @@ def _cli_process_msgs(cli: method.Client, msg: method.Message):
                     elif expire == 'unlimited':
                         expire = 'نامحدود'
                     else:
-                        expire = expire.replace('d', ' روز و ').replace('h', ' ساعت و ').replace('m', ' دقیقه و ').replace('s', ' ثانیه ')
+                        expire = expire.replace('d', ' روز و ').replace('h', ' ساعت و ').replace(
+                            'm', ' دقیقه و ').replace('s', ' ثانیه ')
                     method.send_msg(cid, expire)
                 elif method.search(r'clean delete', txt):
                     result = cli.get_chat_members(

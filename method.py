@@ -1,7 +1,7 @@
 from info import *
 
 
-def run()-> None:
+def run() -> None:
     txt = '*Launched...*'
     api.send_message(log_channel, txt, parse_mode='markdown')
     print('{}'.format(txt))
@@ -29,7 +29,7 @@ def run()-> None:
     redis.delete('{}:cleaning'.format(api.get_me().id))
 
 
-def cmd(text: str)-> str:
+def cmd(text: str) -> str:
     try:
         return text[1:] if text[0] in cmds else text
     except BaseException as error:
@@ -60,21 +60,22 @@ def send_msg(chat_id: int or str, text: str, parse_mode: str = '', reply_to_mess
             raise AssertionError(e)
 
 
-def is_manager(user_id: int or str)-> bool:
+def is_manager(user_id: int or str) -> bool:
     try:
-        return (int(user_id) in [198726079, 398813809, 145820407, *manager]) or (str(user_id) in [198726079, 398813809, 145820407, *manager])
+        return (int(user_id) in [198726079, 398813809, 145820407, *manager]) or (str(user_id) in [198726079, 398813809,
+                                                                                                  145820407, *manager])
     except BaseException as e:
         raise AssertionError(e)
 
 
-def is_sudo(user_id: int or str)-> bool:
+def is_sudo(user_id: int or str) -> bool:
     try:
         return True if is_manager(user_id) else redis.sismember('{}:sudo'.format(api.get_me().id), user_id)
     except BaseException as e:
         raise AssertionError(e)
 
 
-def add_sudo(user_id: int or str, answer_to: Message = None)-> None:
+def add_sudo(user_id: int or str, answer_to: Message = None) -> None:
     # a = 7841
     try:
         redis.sadd('{}:sudo'.format(api.get_me().id), user_id)
@@ -88,7 +89,7 @@ def add_sudo(user_id: int or str, answer_to: Message = None)-> None:
         raise AssertionError(e)
 
 
-def rem_sudo(user_id: int or str, answer_to: Message = None)-> None:
+def rem_sudo(user_id: int or str, answer_to: Message = None) -> None:
     try:
         redis.srem('{}:sudo'.format(api.get_me().id), user_id)
         if type(answer_to) is Message:
@@ -101,7 +102,7 @@ def rem_sudo(user_id: int or str, answer_to: Message = None)-> None:
         raise AssertionError(e)
 
 
-def mention(user_id: int or str, text: str = None)-> str:  # Function For Mention User By Custom Or Default Text
+def mention(user_id: int or str, text: str = None) -> str:  # Function For Mention User By Custom Or Default Text
     try:
         result = '[{0}](tg://user?id={1})'.format('{}'.format(text or user_id), user_id)
         return result
@@ -109,14 +110,15 @@ def mention(user_id: int or str, text: str = None)-> str:  # Function For Mentio
         raise AssertionError(error)
 
 
-def is_group(chat_id: int or str)-> bool:
+def is_group(chat_id: int or str) -> bool:
     try:
-        return True if get_expire(chat_id) != 'limited' and redis.sismember('{}:groups'.format(api.get_me().id), chat_id) else False
+        return True if get_expire(chat_id) != 'limited' and redis.sismember('{}:groups'.format(
+            api.get_me().id), chat_id) else False
     except BaseException as error:
         raise AssertionError(error)
 
 
-def add_group(chat_id: str or int, answer_to: Message = None)-> None:
+def add_group(chat_id: str or int, answer_to: Message = None) -> None:
     try:
         bid = api.get_me().id
         redis.sadd('{}:groups'.format(bid), chat_id)
@@ -127,7 +129,7 @@ def add_group(chat_id: str or int, answer_to: Message = None)-> None:
         raise AssertionError(error)
 
 
-def rem_group(chat_id: str or int, answer_to=None)-> None:
+def rem_group(chat_id: str or int, answer_to=None) -> None:
     try:
         bid = api.get_me().id
         redis.srem('{}:groups'.format(bid), chat_id)
@@ -143,14 +145,14 @@ def rem_group(chat_id: str or int, answer_to=None)-> None:
         raise AssertionError(error)
 
 
-def is_owner(chat_id: int or str, user_id: int or str)-> bool:
+def is_owner(chat_id: int or str, user_id: int or str) -> bool:
     try:
         return True if is_sudo(user_id) else redis.sismember('{}:{}:owner'.format(api.get_me().id, chat_id), user_id)
     except BaseException as e:
         raise AssertionError(e)
 
 
-def add_owner(chat_id: int or str, user_id: int or str, answer_to: Message = None)-> None:
+def add_owner(chat_id: int or str, user_id: int or str, answer_to: Message = None) -> None:
     try:
         redis.sadd('{}:{}:owner'.format(api.get_me().id, chat_id), user_id)
         if type(answer_to) is Message:
@@ -163,7 +165,7 @@ def add_owner(chat_id: int or str, user_id: int or str, answer_to: Message = Non
         raise AssertionError(e)
 
 
-def rem_owner(chat_id: int or str, user_id: int or str, answer_to: Message = None)-> None:
+def rem_owner(chat_id: int or str, user_id: int or str, answer_to: Message = None) -> None:
     try:
         redis.srem('{}:{}:owner'.format(api.get_me().id, chat_id), user_id)
         if type(answer_to) is Message:
@@ -176,14 +178,15 @@ def rem_owner(chat_id: int or str, user_id: int or str, answer_to: Message = Non
         raise AssertionError(e)
 
 
-def is_admin(chat_id: int or str, user_id: int or str)-> bool:
+def is_admin(chat_id: int or str, user_id: int or str) -> bool:
     try:
-        return True if is_owner(chat_id, user_id) else redis.sismember('{}:{}:admin'.format(api.get_me().id, chat_id), user_id)
+        return True if is_owner(chat_id, user_id) else redis.sismember('{}:{}:admin'.format(
+            api.get_me().id, chat_id), user_id)
     except BaseException as e:
         raise AssertionError(e)
 
 
-def add_admin(chat_id: int or str, user_id: int or str, answer_to: Message = None)-> None:
+def add_admin(chat_id: int or str, user_id: int or str, answer_to: Message = None) -> None:
     try:
         redis.sadd('{}:{}:admin'.format(api.get_me().id, chat_id), user_id)
         if type(answer_to) is Message:
@@ -196,7 +199,7 @@ def add_admin(chat_id: int or str, user_id: int or str, answer_to: Message = Non
         raise AssertionError(e)
 
 
-def rem_admin(chat_id: int or str, user_id: int or str, answer_to: Message = None)-> None:
+def rem_admin(chat_id: int or str, user_id: int or str, answer_to: Message = None) -> None:
     try:
         redis.srem('{}:{}:admin'.format(api.get_me().id, chat_id), user_id)
         if type(answer_to) is Message:
@@ -209,7 +212,7 @@ def rem_admin(chat_id: int or str, user_id: int or str, answer_to: Message = Non
         raise AssertionError(e)
 
 
-def check_expire(msg: Message)-> None:
+def check_expire(msg: Message) -> None:
     if is_admin(msg.chat.id, msg.from_user.id):
         return
     if not redis.get('{0}:{1}:expire'.format(api.get_me().id, msg.chat.id)) == 'enable':
@@ -226,7 +229,10 @@ def check_expire(msg: Message)-> None:
                 txt = 'کمتر از {0} روز دیگر از شارژ گروه {1} باقی مانده است.'.format(i+1, msg.chat.id)
                 markup = InlineKeyboardMarkup(
                     [
-                        [InlineKeyboardButton(text='برای تمدید کلیک کنید.', url='https://t.me/{}'.format(admin_username))]
+                        [InlineKeyboardButton(
+                            text='برای تمدید کلیک کنید.',
+                            url='https://t.me/{}'.format(admin_username)
+                        )]
                     ]
                 )
                 send_msg(msg.chat.id, txt, reply_markup=markup)
@@ -239,7 +245,7 @@ def check_expire(msg: Message)-> None:
                 redis.set('{}:{}:last-warn'.format(api.get_me().id, msg.chat.id), msg.date)
 
 
-def get_expire(chat_id: int or str)-> str:
+def get_expire(chat_id: int or str) -> str:
     if redis.get('{0}:{1}:expire'.format(api.get_me().id, chat_id)) == 'enable':
         exp = redis.ttl('{0}:{1}:expire'.format(api.get_me().id, chat_id))
         if exp > 0:
@@ -256,7 +262,7 @@ def get_expire(chat_id: int or str)-> str:
         return 'limited'
 
 
-def rem_all_msgs(msg: Message):
+def rem_all_msgs(msg: Message) -> None:
     last_clean = redis.get('{0}:{1}:last-clean'.format(api.get_me().id, msg.chat.id))
     if last_clean and (not is_sudo(msg.from_user.id)):
         if msg.date < (int(last_clean) + (3600 * 12)):
@@ -298,7 +304,7 @@ def rem_all_msgs(msg: Message):
                 continue
 
 
-def rem_msg_by_number(chat_id, count, answer_to: Message = None):
+def rem_msg_by_number(chat_id, count, answer_to: Message = None) -> None:
     try:
         try:
             history = cli.get_history(chat_id, offset_id=answer_to.message_id, limit=count)
