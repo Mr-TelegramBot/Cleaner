@@ -286,8 +286,8 @@ def rem_all_msgs(msg: Message):
             try:
                 cli.send(
                     functions.channels.DeleteUserHistory(
-                        cli.resolve_peer(message.chat.id),
-                        cli.resolve_peer(message.from_user.id)
+                        channel=cli.resolve_peer(message.chat.id),
+                        user_id=cli.resolve_peer(message.from_user.id)
                     )
                 )
             except FloodWait as e:  # For very large chats the method call can raise a FloodWait

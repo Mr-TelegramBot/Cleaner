@@ -278,8 +278,8 @@ def _cli_process_msgs(cli: method.Client, msg: method.Message):
                     try:
                         client.send(
                             method.functions.channels.DeleteUserHistory(
-                                client.resolve_peer(msg.chat.id),
-                                client.resolve_peer(reply_msg.from_user.id)
+                                channel=client.resolve_peer(msg.chat.id),
+                                user_id=client.resolve_peer(reply_msg.from_user.id)
                             )
                         )
                         txt = '**All Messages From** {0} **Has Been Deleted**'.format(method.mention(reply_msg.from_user.id))
